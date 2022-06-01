@@ -23,10 +23,22 @@ class Notification extends Model
 
     public function getPublishedToAttribute()
     {
-        if ($this->attributes['published_to'] !== '["all"]') {
-            $publishedTo = json_decode($this->attributes['published_to']);
+        if (auth()->user()->memberId->role_id == 1) {
+            if ($this->attributes['published_to'] !== '["all"]') {
+                $publishedTo = json_decode($this->attributes['published_to']);
 
-            return Division::whereIn('id', $publishedTo)->get();
+                return Division::whereIn('id', $publishedTo)->get();
+            }
+        } else {
+            $memberId = auth()->user()->id;
+            $divisionId = DivisionMember::where('member_id', $memberId)->first();
+            $divisionId = $divisionId->division_id;
+            $publishedTo = json_decode($this->attributes['published_to']);
+            foreach ($publishedTo as $department) {
+                if ($department == $divisionId) {
+                    return Division::where('id', $department)->get();
+                }
+            }
         }
 
         return $this->attributes['published_to'];
@@ -37,14 +49,4 @@ class Notification extends Model
         return $this->belongsTo(Member::class, 'created_by');
     }
 
-    public function division()
-    {
-        if ($this->attributes['published_to'] !== '["all"]') {
-            $publishedTo = json_decode($this->attributes['published_to']);
-
-            return Division::whereIn('id', $publishedTo)->get();
-        }
-
-        return $this->attributes['published_to'];
-    }
 }

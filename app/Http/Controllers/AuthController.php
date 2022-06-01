@@ -64,6 +64,7 @@ class AuthController extends Controller
             'token_type' => 'bearer',
             'expires_in' => auth()->factory()->getTTL() * 180,
             'member' => auth()->user(),
+            'role' => auth()->user()->memberId->role_id ?? 3,
         ], Response::HTTP_OK);
     }
 

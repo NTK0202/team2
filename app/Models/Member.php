@@ -58,6 +58,11 @@ class Member extends Authenticate implements JWTSubject
         'note'
     ];
 
+    protected $hidden = [
+        'password',
+        'remember_token',
+    ];
+
     public function setBirthDateAttribute($value)
     {
         $this->attributes['birth_date'] = Carbon::createFromFormat('d/m/Y', $value)->format('Y-m-d');
