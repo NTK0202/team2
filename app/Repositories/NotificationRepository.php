@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use App\Models\Division;
 use App\Models\Notification;
 
 class NotificationRepository extends BaseRepository
@@ -20,7 +21,6 @@ class NotificationRepository extends BaseRepository
         }
 
         return $this->model
-            ->select('id', 'subject', 'created_by', 'published_to', 'published_date', 'attachment')
             ->with('author')
             ->orderBy('published_date', $order)
             ->paginate(5, ['*'], 'page');
@@ -28,11 +28,17 @@ class NotificationRepository extends BaseRepository
 
     public function detail($noticeId)
     {
-        $notifications = $this->model
+        $notification = $this->model
             ->where('id', $noticeId)
-            ->with('division')
+            ->with('author')
             ->first();
+        $divisionName = [];
+        foreach ($notification->published_to as $published){
+            array_push($divisionName, $published->division_name);
+        }
 
-        return $notifications;
+        $notification->published_to == json_encode($divisionName);
+
+        return $notification;
     }
 }

@@ -21,21 +21,24 @@ class Notification extends Model
         'published_to',
     ];
 
-    public function getPublishedDateAttribute()
+    public function getPublishedToAttribute()
     {
-        if ($this->attributes['published_date']) {
-            return Carbon::createFromFormat('Y-m-d', $this->attributes['published_date'])->format('d/m/Y');
+        if ($this->attributes['published_to'] !== '["all"]') {
+            $publishedTo = json_decode($this->attributes['published_to']);
+
+            return Division::whereIn('id', $publishedTo)->get();
         }
+
+        return $this->attributes['published_to'];
     }
 
-    public function author(): BelongsTo
+    public function author()
     {
         return $this->belongsTo(Member::class, 'created_by');
     }
 
     public function division()
     {
-        dd($this->getPublishedDateAttribute());
         if ($this->attributes['published_to'] !== '["all"]') {
             $publishedTo = json_decode($this->attributes['published_to']);
 
