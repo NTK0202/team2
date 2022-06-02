@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Models\Worksheet;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 
 class WorkSheetRepository extends BaseRepository
 {

@@ -17,13 +17,8 @@ class NotificationController extends Controller
         $this->notificationService = $notificationService;
     }
 
-    public function getListNotification(NotificationRequest $request): JsonResponse
+    public function getListNotification(NotificationRequest $request, $member_id): JsonResponse
     {
-        return response()->json(['official_notice' => $this->notificationService->filter($request)]);
-    }
-
-    public function getNoticeDetail($noticeId)
-    {
-        return response()->json(['notice_detail' => $this->notificationService->detail($noticeId)]);
+        return response()->json(['official_notice' => $this->notificationService->filter($request ,$member_id)]);
     }
 }

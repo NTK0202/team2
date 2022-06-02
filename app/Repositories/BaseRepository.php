@@ -34,7 +34,11 @@ abstract class BaseRepository
 
     public function find($id)
     {
-        return $this->model->find($id);
+        if ($this->model->find($id)) {
+            return $this->model->find($id);
+        }
+
+        return response()->json(['message'=>'This worksheet does not exist !']);
     }
 
     public function update($id, $value)
