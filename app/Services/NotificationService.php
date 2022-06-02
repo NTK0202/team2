@@ -19,16 +19,19 @@ class NotificationService extends BaseService
         return (bool) preg_match("/^[0-9]*$/", $params);
     }
 
-    public function filter($request ,$member_id)
+    public function filter($request)
     {
-        if ($this->validateParams($member_id)) {
-            if (Auth::user()->id == $member_id) {
-                return $this->repo->filter($request);
-            } else {
-                return response()->json(["message" => "You cannot access other people's notice!"], Response::HTTP_FORBIDDEN);
-            }
-        } else {
-            return response()->json(["message" => "The param format is invalid!"], Response::HTTP_NOT_FOUND);
+        if (Auth::user()->id) {
+            return $this->repo->filter($request);
         }
+    }
+
+    public function detail($noticeId)
+    {
+        if (Auth::user()->id && $this->validateParams($noticeId)) {
+            return $this->repo->detail($noticeId);
+        }
+
+        return response()->json(["message" => "The param format is invalid!"]);
     }
 }

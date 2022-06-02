@@ -32,7 +32,7 @@ abstract class BaseService
 
     public function validateParams($params)
     {
-        return (preg_match("/^[0-9]*$/", $params)) ? true : false;
+        (!preg_match($params, '/[0-9]*$/')) ? false : true;
     }
 
     public function find($id)

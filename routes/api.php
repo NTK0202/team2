@@ -3,7 +3,6 @@
 use App\Http\Controllers\Admin\CheckLogController;
 use App\Http\Controllers\Admin\MemberController;
 use App\Http\Controllers\Admin\PermissionController;
-use App\Http\Controllers\Admin\RequestController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\WorkSheetController;
 use App\Http\Controllers\AuthController;
@@ -39,25 +38,18 @@ Route::prefix('member')
     });
 
 Route::prefix('notifications')
-    ->middleware(['api'])
+    ->middleware(['checkAuth'])
     ->controller(NotificationController::class)
     ->group(function () {
-        Route::get('/{member_id}', 'getListNotification');
+        Route::get('/','getListNotification');
+        Route::get('/detail/{noticeId}','getNoticeDetail');
     });
 
 Route::prefix('worksheet')
     ->middleware(['checkAuth'])
-    ->controller(WorkSheetController::class)
     ->group(function () {
-        Route::get('my-timesheet', 'list');
-    });
-
-Route::prefix('worksheet/request')
-    ->middleware(['checkAuth'])
-    ->controller(RequestController::class)
-    ->group(function () {
-        Route::get('{id}/type/{type}', 'getRequest');
-        Route::post('forget', 'createForget');
+        Route::get('my-timesheet', [WorkSheetController::class, 'list']);
+        Route::get('/checkLogs', [CheckLogController::class, 'getTimeLogs']);
     });
 
 Route::prefix('permission')
@@ -77,11 +69,4 @@ Route::prefix('role')
         Route::post('add-permission/{id}', 'addPermission');
         Route::put('update-permission/{id}', 'updatePermission');
         Route::delete('delete-permission/{id}', 'deletePermission');
-    });
-
-Route::prefix('worksheet')
-    ->middleware(['checkAuth'])
-    ->controller(CheckLogController::class)
-    ->group(function () {
-        Route::get('/checkLogs/{member_id}', 'getTimeLogs');
     });

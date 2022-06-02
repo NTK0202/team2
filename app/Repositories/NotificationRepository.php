@@ -2,6 +2,8 @@
 
 namespace App\Repositories;
 
+use App\Models\Division;
+use App\Models\DivisionMember;
 use App\Models\Notification;
 
 class NotificationRepository extends BaseRepository
@@ -13,26 +15,38 @@ class NotificationRepository extends BaseRepository
 
     public function filter($request)
     {
-        $order = 'desc';
-
-        if (trim((string)$request->order_published_date) !== "") {
+        if (trim((string) $request->order_published_date) !== "") {
             $order = $request->order_published_date;
         } else {
             $order = 'desc';
         }
 
-        $object = $this->model
-            ->select('id', 'subject', 'created_by', 'published_to', 'published_date', 'attachment')
-            ->orderBy('published_date', $order)
-            ->paginate(5, ['*'], 'page');
+        if (auth()->user()->memberId->role_id == 1) {
+            return $this->model
+                ->with('author')
+                ->orderBy('published_date', $order)
+                ->paginate(5, ['*'], 'page');
+        } else {
+            $memberId = auth()->user()->id;
+            $divisionId = DivisionMember::where('member_id', $memberId)->first();
+            $divisionId = $divisionId->division_id;
 
-        foreach ($object as $unit) {
-            $unit->created_by = $unit->memberFullName->full_name;
-
-            unset($unit->memberFullName);
+            return $this->model
+                ->with('author')
+                ->orderBy('published_date', $order)
+                ->whereJsonContains('published_to', [$divisionId])
+                ->orwhereJsonContains('published_to', ["all"])
+                ->paginate(5, ['*'], 'page');
         }
-
-        return $object;
     }
 
+    public function detail($noticeId)
+    {
+        $notification = $this->model
+            ->where('id', $noticeId)
+            ->with('author')
+            ->first();
+
+        return $notification;
+    }
 }

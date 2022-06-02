@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -11,8 +10,6 @@ class Worksheet extends Model
     use HasFactory;
 
     protected $table = "worksheets";
-
-    public $timestamps = false;
 
     protected $fillable = [
         'id',
