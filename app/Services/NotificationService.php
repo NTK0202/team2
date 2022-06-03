@@ -32,6 +32,6 @@ class NotificationService extends BaseService
             return $this->repo->detail($noticeId);
         }
 
-        return response()->json(["message" => "The param format is invalid!"]);
+        return response()->json(["message" => "The param format is invalid !"]);
     }
 }

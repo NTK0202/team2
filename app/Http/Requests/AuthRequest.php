@@ -24,7 +24,7 @@ class AuthRequest extends FormRequest
      *
      * @return array
      */
-    public function rules(): array
+    public function rules()
     {
         if ($this->method() == "POST"){
             return [
@@ -43,7 +43,9 @@ class AuthRequest extends FormRequest
     }
 
     public function failedValidation(Validator $validator) {
-        throw new HttpResponseException(response()->json($validator->errors(), Response::HTTP_UNPROCESSABLE_ENTITY));
+        throw new HttpResponseException(response()->json(collect($validator->errors())->map(function ($error) {
+            return $error[0];
+        }), Response::HTTP_UNPROCESSABLE_ENTITY));
     }
 
 }

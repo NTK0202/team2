@@ -32,7 +32,7 @@ class AuthController extends Controller
     public function login(AuthRequest $request): JsonResponse
     {
         if (!$token = auth()->attempt($request->validated())) {
-            return response()->json(['error' => 'Email or password is incorrect, please try again'], Response::HTTP_UNAUTHORIZED);
+            return response()->json(['error' => 'Email or password is incorrect, please try again !'], Response::HTTP_UNAUTHORIZED);
         }
 
         return $this->createNewToken($token);
@@ -84,12 +84,12 @@ class AuthController extends Controller
                 ], Response::HTTP_CREATED);
             } else {
                 return response()->json([
-                    'message' => 'New password can not be the old password!',
+                    'message' => 'New password can not be the old password !',
                 ], Response::HTTP_BAD_REQUEST);
             }
         } else {
             return response()->json([
-                'message' => 'Old password is incorrect!',
+                'message' => 'Old password is incorrect !',
             ], Response::HTTP_BAD_REQUEST);
         }
     }

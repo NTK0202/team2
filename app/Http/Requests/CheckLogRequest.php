@@ -33,7 +33,8 @@ class CheckLogRequest extends FormRequest
 
     protected function failedValidation(Validator $validator): void
     {
-        throw new HttpResponseException(response()->json(['errors' => $validator->errors()],
-            ResponseAlias::HTTP_UNPROCESSABLE_ENTITY));
+        throw new HttpResponseException(response()->json(collect($validator->errors())->map(function ($error) {
+            return $error[0];
+        }),ResponseAlias::HTTP_UNPROCESSABLE_ENTITY));
     }
 }

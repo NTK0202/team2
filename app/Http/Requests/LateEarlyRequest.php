@@ -5,19 +5,18 @@ namespace App\Http\Requests;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
-use Illuminate\Validation\Rule;
 use Symfony\Component\HttpFoundation\Response as ResponseAlias;
 
-class NotificationRequest extends FormRequest
+class LateEarlyRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      *
      * @return bool
      */
-    public function authorize(): bool
+    public function authorize()
     {
-        return true;
+        return false;
     }
 
     /**
@@ -28,14 +27,7 @@ class NotificationRequest extends FormRequest
     public function rules()
     {
         return [
-            'order_published_date' => [
-                'nullable',
-                Rule::in(["asc", "desc"])
-            ],
-            'per_page' => [
-                'nullable',
-                'integer',
-            ]
+            //
         ];
     }
 

@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\WorkSheetController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\RegisterLateEarlyController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -50,6 +51,13 @@ Route::prefix('worksheet')
     ->group(function () {
         Route::get('my-timesheet', [WorkSheetController::class, 'list']);
         Route::get('/checkLogs', [CheckLogController::class, 'getTimeLogs']);
+    });
+
+Route::prefix('worksheet/requestLateEarly')
+    ->middleware(['checkAuth'])
+    ->controller(RegisterLateEarlyController::class)
+    ->group(function () {
+       Route::get('/{id}', 'getRequestLateEarly');
     });
 
 Route::prefix('permission')
