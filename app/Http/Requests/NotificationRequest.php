@@ -28,15 +28,20 @@ class NotificationRequest extends FormRequest
     public function rules()
     {
         return [
-            'order_published_date' =>[
+            'order_published_date' => [
                 'nullable',
                 Rule::in(["asc", "desc"])
+            ],
+            'per_page' => [
+                'nullable',
+                'integer',
             ]
         ];
     }
 
     protected function failedValidation(Validator $validator): void
     {
-        throw new HttpResponseException(response()->json(['errors' => $validator->errors()], ResponseAlias::HTTP_UNPROCESSABLE_ENTITY));
+        throw new HttpResponseException(response()->json(['errors' => $validator->errors()],
+            ResponseAlias::HTTP_UNPROCESSABLE_ENTITY));
     }
 }
