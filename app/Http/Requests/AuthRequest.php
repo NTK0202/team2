@@ -29,15 +29,15 @@ class AuthRequest extends FormRequest
         if ($this->method() == "POST"){
             return [
                 'email' => 'required|email',
-                'password' => 'required|string|min:6|max:32',
+                'password' => 'required|string|min:8|max:32',
             ];
         }
 
         if ($this->method() == "PUT"){
             return [
-                'old_password' => 'required|string|min:6|max:32',
-                'new_password' => 'required|string|confirmed|min:6|max:32',
-                'new_password_confirmation' => 'required|string|min:6|max:32',
+                'old_password' => 'required|string|min:8|max:32',
+                'new_password' => 'required|string|confirmed|min:8|max:32',
+                'new_password_confirmation' => 'required|string|min:8|max:32',
             ];
         }
     }
