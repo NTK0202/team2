@@ -30,14 +30,14 @@ class MemberRequest extends FormRequest
             'avatar' => 'mimes:jpg,png|max:4096|dimensions:max_width=500,max_height=500',
             'avatar_official' => 'mimes:jpg,png|max:4096|dimensions:max_width=500,max_height=500',
             'gender' => 'required',
-            'birth_date' => 'required|date_format:d/m/Y',
+            'birth_date' => 'required|date_format:Y-m-d',
             'other_email' => 'required|email',
             'identity_number' => 'required|regex:/^\d+$/|max:12',
-            'identity_card_date' => 'required|date_format:d/m/Y',
+            'identity_card_date' => 'required|date_format:Y-m-d',
             'identity_card_place' => 'required|max:50',
             'skype' => 'nullable|max:30',
             'passport_number' => 'nullable|max:20',
-            'passport_expiration'  => 'nullable|date_format:d/m/Y',
+            'passport_expiration'  => 'nullable|date_format:Y-m-d',
             'nationality' => 'required|max:50',
             'bank_name' => 'required|max:70',
             'bank_account' => 'required|regex:/^\d+$/|max:20',
@@ -51,8 +51,8 @@ class MemberRequest extends FormRequest
             'emergency_contact_relationship' => 'required|max:50',
             'emergency_contact_name' => 'required|max:70',
             'emergency_contact_number' => 'required|regex:/^\d+$/|max:20',
-            'start_date_official' => 'nullable|date_format:d/m/Y',
-            'start_date_probation' => 'nullable|date_format:d/m/Y'
+            'start_date_official' => 'nullable|date_format:Y-m-d',
+            'start_date_probation' => 'nullable|date_format:Y-m-d'
         ];
     }
 

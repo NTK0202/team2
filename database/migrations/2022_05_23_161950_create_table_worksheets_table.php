@@ -20,7 +20,7 @@ class CreateTableWorksheetsTable extends Migration
             $table->date('work_date');
             $table->dateTime('checkin')->nullable();
             $table->dateTime('checkin_original')->nullable();
-            $table->dateTime('chekout')->nullable();
+            $table->dateTime('checkout')->nullable();
             $table->dateTime('checkout_original')->nullable();
             $table->string('late',10)->nullable();
             $table->string('early',10)->nullable();

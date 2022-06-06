@@ -33,12 +33,37 @@ class RegisterLateEarlyRepository extends BaseRepository
                     return $worksheet;
                 }
 
-                return response()->json(['message' => 'This worksheet does not belong to the logged in user !']);
+                return response()->json(['message' => 'You can not view other people worksheet !']);
             }
 
             return response()->json(['message' => 'This worksheet does not exist !']);
         }
 
         return $request;
+    }
+
+    public function createRequestLateEarly($data = [])
+    {
+        $data = [
+            'member_id' => Auth::user()->id,
+            'request_type' => 4,
+        ];
+
+        $this->model->fill($data);
+
+        return $this->model->save();
+    }
+
+    public function updateRequestLateEarly($data, $id)
+    {
+        $request = $this->model->find($id);
+        $data = [
+            'member_id' => Auth::user()->id,
+            'request_type' => 4,
+        ];
+
+        $request->fill($data);
+
+        return $request->save();
     }
 }

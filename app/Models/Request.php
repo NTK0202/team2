@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
 class Request extends Model
 {
@@ -34,4 +35,14 @@ class Request extends Model
         'admin_approved_comment',
         'error_count'
     ];
+
+    public function setCheckinAttribute($value)
+    {
+        $this->attributes['checkin'] = date('Y-m-d H:i', strtotime($this->attributes['request_for_date'] . $value));
+    }
+
+    public function setCheckoutAttribute($value)
+    {
+        $this->attributes['checkout'] = date('Y-m-d H:i', strtotime($this->attributes['request_for_date'] . $value));
+    }
 }

@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class LateEarly extends Model
 {
+
     use HasFactory;
 
     protected $table = 'requests';

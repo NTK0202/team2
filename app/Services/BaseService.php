@@ -5,6 +5,7 @@ namespace App\Services;
 abstract class BaseService
 {
     protected $repo;
+    protected $model;
 
     public function __construct()
     {
@@ -32,7 +33,7 @@ abstract class BaseService
 
     public function validateParams($params)
     {
-        (!preg_match($params, '/[0-9]*$/')) ? false : true;
+        return (preg_match("/^[0-9]*$/", $params)) ? true : false;
     }
 
     public function find($id)

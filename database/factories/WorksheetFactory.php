@@ -17,12 +17,13 @@ class WorksheetFactory extends Factory
     public function definition()
     {
         $member_id = Member::pluck('id')->toArray();
+        
         return [
             'member_id' => $this->faker->randomElement($member_id),
             'work_date' => $this->faker->date(),
             'checkin' => $this->faker->dateTime(),
             'checkin_original' => $this->faker->dateTime(),
-            'checkout'=> $this->faker->dateTime(),
+            'checkout' => $this->faker->dateTime(),
             'checkout_original' => $this->faker->dateTime(),
             'late' => $this->faker->date('H:i'),
             'early' => $this->faker->date('H:i'),

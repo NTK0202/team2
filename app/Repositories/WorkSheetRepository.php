@@ -2,8 +2,10 @@
 
 namespace App\Repositories;
 
+use App\Models\Request;
 use App\Models\Worksheet;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 
 class WorkSheetRepository extends BaseRepository
 {
@@ -33,5 +35,32 @@ class WorkSheetRepository extends BaseRepository
         }
 
         return $this->model->paginate(3, ['*'], 'page');
+    }
+
+    public function findRequest($date)
+    {
+        return Request::where('member_id', Auth::user()->id)
+            ->where('request_for_date', $date)
+            ->where('request_type', 1)
+            ->first();
+    }
+
+    public function find($id)
+    {
+        $worksheet = $this->model->where('id', $id)
+            ->where('member_id', Auth::user()->id)
+            ->first();
+            
+        if ($this->model->find($id)) {
+            if ($worksheet) {
+                $findRequest = $this->findRequest($worksheet->work_date);
+
+                return (!$findRequest) ? $worksheet : $findRequest;
+            }
+
+            return response()->json(['message' => "You cannot access other people's worksheets"]);
+        }
+
+        return response()->json(['message' => 'This worksheet does not exist !']);
     }
 }

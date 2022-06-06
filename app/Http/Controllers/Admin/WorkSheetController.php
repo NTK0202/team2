@@ -23,4 +23,9 @@ class WorkSheetController extends Controller
     {
         return response()->json(['worksheet' => $this->worksheetService->filter($request,  $this->member_id)]);
     }
+
+    public function getRequest($id)
+    {
+        return $this->worksheetService->find($id);
+    }
 }

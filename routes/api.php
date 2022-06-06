@@ -3,11 +3,13 @@
 use App\Http\Controllers\Admin\CheckLogController;
 use App\Http\Controllers\Admin\MemberController;
 use App\Http\Controllers\Admin\PermissionController;
+use App\Http\Controllers\Admin\RegisterForgetController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\WorkSheetController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\RegisterLateEarlyController;
+use App\Http\Controllers\RegisterOTController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -42,8 +44,8 @@ Route::prefix('notifications')
     ->middleware(['checkAuth'])
     ->controller(NotificationController::class)
     ->group(function () {
-        Route::get('/','getListNotification');
-        Route::get('/detail/{noticeId}','getNoticeDetail');
+        Route::get('/', 'getListNotification');
+        Route::get('/detail/{noticeId}', 'getNoticeDetail');
     });
 
 Route::prefix('worksheet')
@@ -51,13 +53,33 @@ Route::prefix('worksheet')
     ->group(function () {
         Route::get('my-timesheet', [WorkSheetController::class, 'list']);
         Route::get('/checkLogs', [CheckLogController::class, 'getTimeLogs']);
+        Route::get('{id}', [WorkSheetController::class,'getRequest']);
     });
 
 Route::prefix('worksheet/requestLateEarly')
     ->middleware(['checkAuth'])
     ->controller(RegisterLateEarlyController::class)
     ->group(function () {
-       Route::get('/{id}', 'getRequestLateEarly');
+        Route::get('/{id}', 'getRequestLateEarly');
+        Route::post('/create', 'createRequestLateEarly');
+        Route::put('/update/{id}', 'updateRequestLateEarly');
+    });
+
+Route::prefix('worksheet/requestOT')
+    ->middleware(['checkAuth'])
+    ->controller(RegisterOTController::class)
+    ->group(function () {
+        Route::get('/{id}', 'getRequestOT');
+        Route::post('/create', 'createRequestOT');
+        Route::put('/update/{id}', 'updateRequestOT');
+    });
+
+Route::prefix('worksheet/request')
+    ->middleware(['checkAuth'])
+    ->controller(RegisterForgetController::class)
+    ->group(function () {
+        Route::post('forget/create', 'createForget');
+        Route::put('forget/update','updateForget');
     });
 
 Route::prefix('permission')

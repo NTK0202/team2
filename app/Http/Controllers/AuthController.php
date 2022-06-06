@@ -32,7 +32,7 @@ class AuthController extends Controller
     public function login(AuthRequest $request): JsonResponse
     {
         if (!$token = auth()->attempt($request->validated())) {
-            return response()->json(['error' => 'Email or password is incorrect, please try again !'], Response::HTTP_UNAUTHORIZED);
+            return response()->json(['error' => 'Email or password is incorrect, please try again !'], Response::HTTP_FORBIDDEN);
         }
 
         return $this->createNewToken($token);
@@ -62,7 +62,7 @@ class AuthController extends Controller
         return response()->json([
             'access_token' => $token,
             'token_type' => 'bearer',
-            'expires_in' => auth()->factory()->getTTL() * 180,
+            'expires_in' => getenv('JWT_TTL'),
             'member' => auth()->user(),
             'role' => auth()->user()->memberId->role_id ?? 3,
         ], Response::HTTP_OK);
