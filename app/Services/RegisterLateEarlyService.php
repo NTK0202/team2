@@ -2,28 +2,54 @@
 
 namespace App\Services;
 
+use App\Models\MemberRequestQuota;
+use App\Models\Request;
 use App\Repositories\RegisterLateEarlyRepository;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 
 class RegisterLateEarlyService extends BaseService
 {
+    public function getModel()
+    {
+        return $this->model = Request::class;
+    }
 
     public function getRepository(): string
     {
         return RegisterLateEarlyRepository::class;
     }
 
-    public function getRequestLateEarly($id)
+    public function checkRequest($date)
     {
-        return $this->repo->getRequestLateEarly($id);
+        $dateRequest = Carbon::createFromFormat('Y-m-d', $date)->format('Y-m');
+        $checkExistRequestQuota = MemberRequestQuota::where('month', $dateRequest)
+            ->doesntExist();
+
+        if ($checkExistRequestQuota) {
+            $data = [
+                'member_id' => Auth::user()->id,
+                'month' => Carbon::createFromFormat('Y-m-d', $date)->format('Y-m')
+            ];
+
+            $this->repo->createMemberRequestQuota($data);
+        }
+
+        return $this->repo->checkRequest($date);
     }
 
     public function createRequestLateEarly($request)
     {
-        return $this->repo->createRequestLateEarly($request->all());
+        $dataRequest = array_map('trim', $request->all());
+        $dataRequest['member_id'] = Auth::user()->id;
+        $dataRequest['request_type'] = 1;
+
+        return $this->repo->createRequestLateEarly($dataRequest);
     }
 
     public function updateRequestLateEarly($request, $id)
     {
-        return $this->repo->updateRequestLateEarly($request->all(), $id);
+        $dataRequest = array_map('trim', $request->all());
+        return $this->repo->updateRequestLateEarly($dataRequest, $id);
     }
 }

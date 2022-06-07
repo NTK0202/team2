@@ -20,7 +20,7 @@ class MemberFactory extends Factory
         return [
             'member_code' => substr(str_shuffle(str_repeat($pool, 5)), 0, 10),
             'full_name' => $this->faker->name(),
-            'email' => 'test'.$this->faker->unique()->numberBetween(100, 999).'@gmail.com',
+            'email' => 'test'.$this->faker->unique()->numberBetween(100, 300).'@gmail.com',
             'password' => Hash::make('12345678'), // password
             'other_email' => $this->faker->unique()->safeEmail(),
             'phone' => $this->faker->phoneNumber(),

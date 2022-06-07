@@ -27,8 +27,7 @@ class DatabaseSeeder extends Seeder
             'title' => 'Member',
         ]);
 
-        \App\Models\Member::factory(800)->create();
-        \App\Models\MemberRole::factory(800)->create();
-
+        \App\Models\Member::factory(200)->create();
+        \App\Models\MemberRole::factory(200)->create();
     }
 }

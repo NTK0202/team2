@@ -3,7 +3,9 @@
 namespace App\Repositories;
 
 use App\Models\LateEarly;
+use App\Models\MemberRequestQuota;
 use App\Models\Worksheet;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 
 class RegisterLateEarlyRepository extends BaseRepository
@@ -14,56 +16,63 @@ class RegisterLateEarlyRepository extends BaseRepository
         return LateEarly::class;
     }
 
-    public function getRequestLateEarly($id)
+    public function checkRequest($date)
     {
-        $requestType = 4;
-
-        $worksheet = Worksheet::where('id', $id)
-            ->where('member_id', Auth::user()->id)
+        return MemberRequestQuota::where('remain', '>', 0)
+            ->where('month', Carbon::createFromFormat('Y-m-d', $date)->format('Y-m'))
             ->first();
+    }
 
-        $request = LateEarly::where('member_id', Auth::user()->id)
-            ->where('request_for_date', 'like', $worksheet->work_date)
-            ->where('request_type', $requestType)
-            ->first();
+    public function createMemberRequestQuota($data = [])
+    {
+        $memberRequestQuota = new MemberRequestQuota();
+        $memberRequestQuota->fill($data);
 
-        if (!$request) {
-            if (Worksheet::find($id)) {
-                if ($worksheet) {
-                    return $worksheet;
-                }
-
-                return response()->json(['message' => 'You can not view other people worksheet !']);
-            }
-
-            return response()->json(['message' => 'This worksheet does not exist !']);
-        }
-
-        return $request;
+        return $memberRequestQuota->save();
     }
 
     public function createRequestLateEarly($data = [])
     {
-        $data = [
-            'member_id' => Auth::user()->id,
-            'request_type' => 4,
-        ];
+        $request = $this->model->where('request_for_date', 'like', $data['request_for_date'])
+            ->where('member_id', Auth::user()->id)
+            ->where('request_type', 4)
+            ->doesntExist();
 
-        $this->model->fill($data);
+        if ($request) {
+            $this->model->fill($data);
+            $this->model->save();
 
-        return $this->model->save();
+            return response()->json(['message' => 'Register request late/early successfully !']);
+        }
+
+        return response()->json(['message' => "Only one request of the same type is allowed per day !"]);
+
     }
 
     public function updateRequestLateEarly($data, $id)
     {
-        $request = $this->model->find($id);
-        $data = [
-            'member_id' => Auth::user()->id,
-            'request_type' => 4,
-        ];
+        $request = $this->model->where('request_for_date', 'like', $data['request_for_date'])
+            ->where('member_id', Auth::user()->id)
+            ->where('request_type', 4)
+            ->whereIn('status', [1, 2])
+            ->doesntExist();
 
-        $request->fill($data);
+        if ($request) {
+            $updateRequest = $this->model->where('request_for_date', 'like', $data['request_for_date'])
+                ->where('member_id', Auth::user()->id)
+                ->where('request_type', 4)
+                ->first();
 
-        return $request->save();
+            if ($updateRequest) {
+                $updateRequest->fill($data);
+                $updateRequest->save();
+
+                return response()->json(['message' => 'Update request late/early successfully !']);
+            }
+
+            return response()->json(['message' => 'Request late/early does not exist']);
+        }
+
+        return response()->json(['message' => "Your request is in confirmed or approved status, so it cannot be edited !"]);
     }
 }

@@ -9,7 +9,7 @@ use Illuminate\Http\JsonResponse;
 
 class RegisterLateEarlyController extends Controller
 {
-    
+
     protected $registerLateEarlyService;
 
     public function __construct(RegisterLateEarlyService $registerLateEarlyService)
@@ -18,21 +18,20 @@ class RegisterLateEarlyController extends Controller
         $this->registerLateEarlyService = $registerLateEarlyService;
     }
 
-    public function getRequestLateEarly($id): JsonResponse
-    {
-        return response()->json(['request' => $this->registerLateEarlyService->getRequestLateEarly($id)]);
-    }
-
     public function createRequestLateEarly(RegisterLateEaryRequest $request)
     {
-        $this->registerLateEarlyService->createRequestLateEarly($request);
+        if ($this->registerLateEarlyService->checkRequest($request['request_for_date'])) {
+            $this->registerLateEarlyService->createRequestLateEarly($request);
+        }
 
-        return response()->json(['message' => 'Register successfully !']);
+        return response()->json(['message' => 'You have run out of requests !']);
     }
 
     public function updateRequestLateEarly(RegisterLateEaryRequest $request, $id)
     {
-        $this->registerLateEarlyService->updateRequestLateEarly($request, $id);
+        if ($this->registerLateEarlyService->checkRequest($request['request_for_date'])) {
+            $this->registerLateEarlyService->updateRequestLateEarly($request, $id);
+        }
 
         return response()->json(['message' => 'Update successfully !']);
     }
