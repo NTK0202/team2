@@ -27,10 +27,10 @@ class RegisterLateEarlyController extends Controller
         return response()->json(['message' => 'You have run out of requests !']);
     }
 
-    public function updateRequestLateEarly(RegisterLateEaryRequest $request, $id)
+    public function updateRequestLateEarly(RegisterLateEaryRequest $request)
     {
         if ($this->registerLateEarlyService->checkRequest($request['request_for_date'])) {
-            $this->registerLateEarlyService->updateRequestLateEarly($request, $id);
+            $this->registerLateEarlyService->updateRequestLateEarly($request);
         }
 
         return response()->json(['message' => 'Update successfully !']);

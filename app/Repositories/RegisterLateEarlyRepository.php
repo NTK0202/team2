@@ -49,7 +49,7 @@ class RegisterLateEarlyRepository extends BaseRepository
 
     }
 
-    public function updateRequestLateEarly($data, $id)
+    public function updateRequestLateEarly($data)
     {
         $request = $this->model->where('request_for_date', 'like', $data['request_for_date'])
             ->where('member_id', Auth::user()->id)

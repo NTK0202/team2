@@ -47,9 +47,9 @@ class RegisterLateEarlyService extends BaseService
         return $this->repo->createRequestLateEarly($dataRequest);
     }
 
-    public function updateRequestLateEarly($request, $id)
+    public function updateRequestLateEarly($request)
     {
         $dataRequest = array_map('trim', $request->all());
-        return $this->repo->updateRequestLateEarly($dataRequest, $id);
+        return $this->repo->updateRequestLateEarly($dataRequest);
     }
 }

@@ -56,22 +56,20 @@ Route::prefix('worksheet')
         Route::get('{id}', [WorkSheetController::class,'getRequest']);
     });
 
-Route::prefix('worksheet/requestLateEarly')
+Route::prefix('worksheet/request/LateEarly')
     ->middleware(['checkAuth'])
     ->controller(RegisterLateEarlyController::class)
     ->group(function () {
-        Route::get('/{id}', 'getRequestLateEarly');
         Route::post('/create', 'createRequestLateEarly');
-        Route::put('/update/{id}', 'updateRequestLateEarly');
+        Route::put('/update', 'updateRequestLateEarly');
     });
 
-Route::prefix('worksheet/requestOT')
+Route::prefix('worksheet/request/OT')
     ->middleware(['checkAuth'])
     ->controller(RegisterOTController::class)
     ->group(function () {
-        Route::get('/{id}', 'getRequestOT');
         Route::post('/create', 'createRequestOT');
-        Route::put('/update/{id}', 'updateRequestOT');
+        Route::put('/update', 'updateRequestOT');
     });
 
 Route::prefix('worksheet/request')
