@@ -13,8 +13,9 @@ class NotificationFactory extends Factory
      */
     public function definition()
     {
+//        $published_to = ['all'];
         $published_to = [];
-        array_push($published_to, rand(1, 5), rand(6, 10));
+        array_push($published_to, rand(1, 3), rand(4, 6), rand(7,10));
         $published_to = json_encode($published_to);
 
         return [
@@ -24,7 +25,7 @@ class NotificationFactory extends Factory
             'status' => rand(0, 2),
             'published_to' => $published_to,
             'attachment' => 'https://jes.edu.vn/wp-content/uploads/2017/10/h%C3%ACnh-%E1%BA%A3nh.jpg',
-            'created_by' => rand(1, 200),
+            'created_by' => rand(1, 800),
         ];
     }
 }

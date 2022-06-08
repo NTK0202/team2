@@ -13,6 +13,7 @@ class WorksheetSeeder extends Seeder
      */
     public function run()
     {
-        \App\Models\Worksheet::factory(10)->create();
+        \App\Models\Worksheet::factory(800)->create();
+        \App\Models\CheckLog::factory(800)->create();
     }
 }

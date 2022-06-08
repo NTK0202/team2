@@ -16,6 +16,7 @@ class DivisionMemberFactory extends Factory
     public function definition()
     {
         $memberId = Member::pluck('id')->toarray();
+
         return [
             'member_id' => $this->faker->unique()->randomElement($memberId),
             'division_id' => rand(1, 10),
