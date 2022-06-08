@@ -4,7 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 
-class DivisionSeeder extends Seeder
+class CheckLogSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -13,6 +13,6 @@ class DivisionSeeder extends Seeder
      */
     public function run()
     {
-        \App\Models\Notification::factory(2)->create();
+        \App\Models\CheckLog::factory(800)->create();
     }
 }

@@ -14,6 +14,6 @@ class NotificationSeeder extends Seeder
     public function run()
     {
         \App\Models\DivisionMember::factory(800)->create();
-        \App\Models\Notification::factory(800)->create();
+        \App\Models\Notification::factory(400)->create();
     }
 }
