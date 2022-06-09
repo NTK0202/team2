@@ -27,7 +27,7 @@ class RegisterLateEaryRequest extends FormRequest
     public function rules()
     {
         return [
-            'reason' => 'required|string',
+            'reason' => 'required|string|max:100',
             'request_for_date' => 'required|date',
         ];
     }

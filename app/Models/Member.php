@@ -58,6 +58,11 @@ class Member extends Authenticate implements JWTSubject
         'note'
     ];
 
+    protected $hidden = [
+        'password',
+        'remember_token',
+    ];
+
     /**
      * Get the identifier that will be stored in the subject claim of the JWT.
      *
