@@ -4,11 +4,11 @@ namespace App\Services;
 
 use App\Models\MemberRequestQuota;
 use App\Models\Request;
-use App\Repositories\RegisterLateEarlyRepository;
+use App\Repositories\RegisterOverTimeRepository;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 
-class RegisterLateEarlyService extends BaseService
+class RegisterOverTimeService extends BaseService
 {
 
     public function getModel()
@@ -18,7 +18,7 @@ class RegisterLateEarlyService extends BaseService
 
     public function getRepository(): string
     {
-        return RegisterLateEarlyRepository::class;
+        return RegisterOverTimeRepository::class;
     }
 
     public function checkRequest($date)
@@ -39,18 +39,18 @@ class RegisterLateEarlyService extends BaseService
         return $this->repo->checkRequest($date);
     }
 
-    public function createRequestLateEarly($request)
+    public function createRequestOverTime($request)
     {
         $dataRequest = array_map('trim', $request->all());
         $dataRequest['member_id'] = Auth::user()->id;
-        $dataRequest['request_type'] = 4;
+        $dataRequest['request_type'] = 5;
 
-        return $this->repo->createRequestLateEarly($dataRequest);
+        return $this->repo->createRequestOverTime($dataRequest);
     }
 
-    public function updateRequestLateEarly($request)
+    public function updateRequestOverTime($request)
     {
         $dataRequest = array_map('trim', $request->all());
-        return $this->repo->updateRequestLateEarly($dataRequest);
+        return $this->repo->updateRequestOverTime($dataRequest);
     }
 }

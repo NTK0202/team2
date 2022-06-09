@@ -21,7 +21,7 @@ class NotificationFactory extends Factory
         return [
             'published_date' => $this->faker->date(),
             'subject' => $this->faker->title(),
-            'message' => $this->faker->text(),
+            'message' => $this->faker->text(100),
             'status' => rand(0, 2),
             'published_to' => $published_to,
             'attachment' => 'https://jes.edu.vn/wp-content/uploads/2017/10/h%C3%ACnh-%E1%BA%A3nh.jpg',

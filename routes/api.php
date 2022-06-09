@@ -9,7 +9,7 @@ use App\Http\Controllers\Admin\WorkSheetController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\RegisterLateEarlyController;
-use App\Http\Controllers\RegisterOTController;
+use App\Http\Controllers\RegisterOverTimeController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -64,9 +64,9 @@ Route::prefix('worksheet/request/LateEarly')
         Route::put('/update', 'updateRequestLateEarly');
     });
 
-Route::prefix('worksheet/request/OT')
+Route::prefix('worksheet/request/OverTime')
     ->middleware(['checkAuth'])
-    ->controller(RegisterOTController::class)
+    ->controller(RegisterOverTimeController::class)
     ->group(function () {
         Route::post('/create', 'createRequestOT');
         Route::put('/update', 'updateRequestOT');
