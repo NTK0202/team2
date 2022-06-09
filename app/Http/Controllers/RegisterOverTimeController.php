@@ -22,7 +22,7 @@ class RegisterOverTimeController extends Controller
     public function createRequestOverTime(RegisterOverTimeRequest $request)
     {
         if ($this->registerOverTimeService->checkRequest($request['request_for_date'])) {
-            $this->registerOverTimeService->createRequestOverTime($request);
+            return $this->registerOverTimeService->createRequestOverTime($request);
         }
 
         return response()->json(['message' => 'You have run out of requests !']);
@@ -31,7 +31,7 @@ class RegisterOverTimeController extends Controller
     public function updateRequestOverTime(RegisterOverTimeRequest $request)
     {
         if ($this->registerOverTimeService->checkRequest($request['request_for_date'])) {
-            $this->registerOverTimeService->updateRequestOverTime($request);
+            return $this->registerOverTimeService->updateRequestOverTime($request);
         }
 
         return response()->json(['message' => 'Update successfully !']);
