@@ -10,7 +10,6 @@ use Illuminate\Support\Facades\Auth;
 
 class RegisterLateEarlyService extends BaseService
 {
-
     public function getModel()
     {
         return $this->model = Request::class;

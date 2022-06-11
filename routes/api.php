@@ -68,8 +68,8 @@ Route::prefix('worksheet/request/OverTime')
     ->middleware(['checkAuth'])
     ->controller(RegisterOverTimeController::class)
     ->group(function () {
-        Route::post('/create', 'createRequestOT');
-        Route::put('/update', 'updateRequestOT');
+        Route::post('/create', 'createRequestOverTime');
+        Route::put('/update', 'updateRequestOverTime');
     });
 
 Route::prefix('worksheet/request')

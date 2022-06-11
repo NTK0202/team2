@@ -30,7 +30,7 @@ class RegisterOverTimeRepository extends BaseRepository
         return $memberRequestQuota->save();
     }
 
-    public function createRequestLateEarly($data = [])
+    public function createRequestOverTime($data = [])
     {
         $request = $this->model->where('request_for_date', 'like', $data['request_for_date'])
             ->where('member_id', Auth::user()->id)
@@ -48,7 +48,7 @@ class RegisterOverTimeRepository extends BaseRepository
 
     }
 
-    public function updateRequestLateEarly($data)
+    public function updateRequestOverTime($data)
     {
         $request = $this->model->where('request_for_date', 'like', $data['request_for_date'])
             ->where('member_id', Auth::user()->id)

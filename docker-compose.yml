@@ -1,0 +1,40 @@
+version: "3.8"
+services:
+
+    # PHP service
+    app:
+        build: .
+        container_name: php-app
+        working_dir: /var/www/app
+        volumes:
+            - ./:/var/www/app
+        networks:
+            - app-network
+    db:
+        image: mysql:8.0.29
+        container_name: mysql-db
+        ports:
+            - "3307:3306"
+        environment:
+            MYSQL_ROOT_PASSWORD: Passw0rd!
+            MYSQL_DATABASE: mock2
+            MYSQL_USER: mock2
+            MYSQL_PASSWORD: Passw0rd!
+        networks:
+            - app-network
+
+    # Nginx service
+    nginx:
+        image: nginx:alpine
+        container_name: php-nginx
+        ports:
+            - 80:80
+        volumes:
+            - ./:/var/www/app
+            - ./nginx/conf.d/:/etc/nginx/conf.d/
+        networks:
+            - app-network
+
+networks:
+    app-network:
+        driver: bridge
