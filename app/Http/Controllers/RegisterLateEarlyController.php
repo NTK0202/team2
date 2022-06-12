@@ -6,6 +6,7 @@ use App\Http\Requests\RegisterLateEaryRequest;
 use App\Services\RegisterLateEarlyService;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
 
 class RegisterLateEarlyController extends Controller
 {
@@ -24,7 +25,7 @@ class RegisterLateEarlyController extends Controller
             return $this->registerLateEarlyService->createRequestLateEarly($request);
         }
 
-        return response()->json(['message' => 'You have run out of requests !']);
+        return response()->json(['message' => 'You have run out of requests !'], Response::HTTP_CONFLICT);
     }
 
     public function updateRequestLateEarly(RegisterLateEaryRequest $request)
@@ -33,6 +34,11 @@ class RegisterLateEarlyController extends Controller
             return $this->registerLateEarlyService->updateRequestLateEarly($request);
         }
 
-        return response()->json(['message' => 'Update successfully !']);
+        return response()->json(['message' => 'Update successfully !'], Response::HTTP_OK);
+    }
+
+    public function getWorksheetByWorkDate($work_date)
+    {
+        return $this->registerLateEarlyService->getWorksheetByWorkDate($work_date);
     }
 }

@@ -46,6 +46,7 @@ Route::prefix('notifications')
     ->group(function () {
         Route::get('/', 'getListNotification');
         Route::get('/detail/{noticeId}', 'getNoticeDetail');
+        Route::get('/download/{file}', 'downloadFileAttachment');
     });
 
 Route::prefix('worksheet')
@@ -62,6 +63,7 @@ Route::prefix('worksheet/request/LateEarly')
     ->group(function () {
         Route::post('/create', 'createRequestLateEarly');
         Route::put('/update', 'updateRequestLateEarly');
+        Route::get('/getWorksheetByWorkDate/{work_date}', 'getWorksheetByWorkDate');
     });
 
 Route::prefix('worksheet/request/OverTime')

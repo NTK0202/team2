@@ -32,6 +32,15 @@ class NotificationService extends BaseService
             return $this->repo->detail($noticeId);
         }
 
-        return response()->json(["message" => "The param format is invalid !"]);
+        return response()->json(["message" => "The param format is invalid !"], Response::HTTP_UNPROCESSABLE_ENTITY);
+    }
+
+    public function isFileAttachment($file)
+    {
+        if (Auth::user()->id == 1) {
+            return true;
+        } elseif (Auth::user()->id) {
+            return $this->repo->isFileAttachment($file);
+        }
     }
 }

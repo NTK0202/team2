@@ -24,7 +24,7 @@ class NotificationFactory extends Factory
             'message' => $this->faker->text(),
             'status' => rand(0, 2),
             'published_to' => $published_to,
-            'attachment' => 'https://jes.edu.vn/wp-content/uploads/2017/10/h%C3%ACnh-%E1%BA%A3nh.jpg',
+            'attachment' => 'python-practice-book.pdf',
             'created_by' => rand(1, 800),
         ];
     }

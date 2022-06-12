@@ -44,15 +44,12 @@ class NotificationRepository extends BaseRepository
 
     public function detail($noticeId)
     {
-
         if (auth()->user()->memberId->role_id == 1) {
             return $this->model
                 ->where('id', $noticeId)
                 ->with('author')
                 ->first();
         } else {
-
-
             return $this->model
                 ->with('author')
                 ->where('id', $noticeId)
@@ -67,5 +64,19 @@ class NotificationRepository extends BaseRepository
                 })
                 ->first();
         }
+    }
+
+    public function isFileAttachment($file)
+    {
+        $memberId = auth()->user()->id;
+        $divisionId = DivisionMember::where('member_id', $memberId)->first();
+        $divisionId = $divisionId->division_id;
+
+        return $this->model
+            ->where('attachment', $file)
+            ->with('author')
+            ->whereJsonContains('published_to', [$divisionId])
+            ->orwhereJsonContains('published_to', ["all"])
+            ->doesntExist();
     }
 }

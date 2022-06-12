@@ -7,6 +7,7 @@ use App\Models\Request;
 use App\Repositories\RegisterLateEarlyRepository;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Symfony\Component\HttpFoundation\Response;
 
 class RegisterLateEarlyService extends BaseService
 {
@@ -51,5 +52,19 @@ class RegisterLateEarlyService extends BaseService
     {
         $dataRequest = array_map('trim', $request->all());
         return $this->repo->updateRequestLateEarly($dataRequest);
+    }
+
+    public function validateParams($params): bool
+    {
+        return (bool) preg_match("/^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$/", $params);
+    }
+
+    public function getWorksheetByWorkDate($work_date)
+    {
+        if (Auth::user()->id && $this->validateParams($work_date)) {
+            return $this->repo->getWorksheetByWorkDate($work_date);
+        }
+
+        return response()->json(["message" => "The param format is invalid !"], Response::HTTP_UNPROCESSABLE_ENTITY);
     }
 }

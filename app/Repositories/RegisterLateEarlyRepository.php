@@ -4,9 +4,11 @@ namespace App\Repositories;
 
 use App\Models\LateEarly;
 use App\Models\MemberRequestQuota;
+use App\Models\Request;
 use App\Models\Worksheet;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Symfony\Component\HttpFoundation\Response;
 
 class RegisterLateEarlyRepository extends BaseRepository
 {
@@ -42,10 +44,12 @@ class RegisterLateEarlyRepository extends BaseRepository
             $this->model->fill($data);
             $this->model->save();
 
-            return response()->json(['message' => 'Register request late/early successfully !']);
+            return response()->json(['message' => 'Register request late/early successfully !'],
+                Response::HTTP_CREATED);
         }
 
-        return response()->json(['message' => "Only one request of the same type is allowed per day !"]);
+        return response()->json(['message' => "Only one request of the same type is allowed per day !"],
+            Response::HTTP_FORBIDDEN);
 
     }
 
@@ -67,12 +71,20 @@ class RegisterLateEarlyRepository extends BaseRepository
                 $updateRequest->fill($data);
                 $updateRequest->save();
 
-                return response()->json(['message' => 'Update request late/early successfully !']);
+                return response()->json(['message' => 'Update request late/early successfully !'], Response::HTTP_OK);
             }
 
-            return response()->json(['message' => 'Request late/early does not exist']);
+            return response()->json(['message' => 'Request late/early does not exist'], Response::HTTP_NOT_FOUND);
         }
 
-        return response()->json(['message' => "Your request is in confirmed or approved status, so it cannot be edited !"]);
+        return response()->json(['message' => "Your request is in confirmed or approved status, so it cannot be edited !"],
+            Response::HTTP_FORBIDDEN);
+    }
+
+    public function getWorksheetByWorkDate($work_date)
+    {
+        return Worksheet::where('member_id', Auth::user()->id)
+            ->where('work_date', $work_date)
+            ->first();
     }
 }

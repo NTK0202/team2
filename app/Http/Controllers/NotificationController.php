@@ -6,6 +6,8 @@ use App\Http\Requests\NotificationRequest;
 use App\Services\NotificationService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use Symfony\Component\HttpFoundation\Response;
 
 class NotificationController extends Controller
 {
@@ -17,7 +19,7 @@ class NotificationController extends Controller
         $this->notificationService = $notificationService;
     }
 
-    public function getListNotification(NotificationRequest $request): JsonResponse
+    public function getListNotification(NotificationRequest $request)
     {
         return response()->json([
             'official_notice' => $this->notificationService->filter($request),
@@ -28,5 +30,24 @@ class NotificationController extends Controller
     public function getNoticeDetail($noticeId)
     {
         return response()->json(['notice_detail' => $this->notificationService->detail($noticeId)]);
+    }
+
+    public function downloadFileAttachment($file)
+    {
+        $isFileAttachment = $this->notificationService->isFileAttachment($file);
+
+        if (Storage::exists($file)) {
+            if (!$isFileAttachment) {
+                return Storage::download($file);
+            } else {
+                return response()->json([
+                    'message' => 'You do not have permission to this file !'
+                ], Response::HTTP_FORBIDDEN);
+            }
+        } else {
+            return response()->json([
+                'message' => 'The file you requested does not exist !'
+            ], Response::HTTP_NOT_FOUND);
+        }
     }
 }
