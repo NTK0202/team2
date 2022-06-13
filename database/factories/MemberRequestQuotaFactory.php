@@ -18,12 +18,11 @@ class MemberRequestQuotaFactory extends Factory
         static $year = 2022;
         $workDate = $year.'-'.$month;
 
-        if ($id == 800) {
+        if ($id == 100) {
             $month++;
         }
-
         return [
-            'member_id' => $id++ < 800 ? $id : $id=1,
+            'member_id' => $id++ < 100 ? $id : $id = 1,
             'month' => date('Y-m', strtotime($workDate)),
         ];
     }

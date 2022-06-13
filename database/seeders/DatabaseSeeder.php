@@ -14,22 +14,14 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-
-        DB::table('roles')->insert([
-            'title' => 'Admin',
-        ]);
-
-        DB::table('roles')->insert([
-            'title' => 'Manager',
-        ]);
-
-        DB::table('roles')->insert([
-            'title' => 'Member',
-        ]);
-
         \App\Models\Member::factory(800)->create();
+        \App\Models\Role::factory(3)->create();
         \App\Models\MemberRole::factory(800)->create();
-        \App\Models\Worksheet::factory(800)->create();
-        \App\Models\Division::factory(10)->create();
+        \App\Models\Worksheet::factory(50000)->create();
+        \App\Models\Division::factory(6)->create();
+        \App\Models\DivisionMember::factory(800)->create();
+        \App\Models\MemberRequestQuota::factory(4000)->create();
+        \App\Models\CheckLog::factory(100000)->create();
+        \App\Models\Notification::factory(500)->create();
     }
 }

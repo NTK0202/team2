@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use App\Models\Member;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Facades\DB;
 
 class MemberRoleFactory extends Factory
 {
@@ -14,11 +15,11 @@ class MemberRoleFactory extends Factory
      */
     public function definition()
     {
-        $memberId = Member::pluck('id')->toarray();
-
+        static $memberId = 1;
+        $roleId = DB::table('roles')->pluck('id');
         return [
-            'member_id' => $this->faker->unique()->randomElement($memberId),
-            'role_id' => rand(1, 3),
+            'role_id' => $this->faker->randomElement($roleId),
+            'member_id' => $memberId++,
         ];
     }
 }

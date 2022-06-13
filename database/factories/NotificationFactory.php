@@ -13,10 +13,17 @@ class NotificationFactory extends Factory
      */
     public function definition()
     {
-//        $published_to = ['all'];
-        $published_to = [];
-        array_push($published_to, rand(1, 3), rand(4, 6), rand(7,10));
-        $published_to = json_encode($published_to);
+        static $id = 0;
+        $id++;
+
+        if ($id % 2 == 0) {
+            $published_to = [];
+            array_push($published_to, rand(1, 2), rand(3, 4), rand(5, 6));
+            $published_to = json_encode($published_to);
+        } else {
+            $published_to = ['all'];
+            $published_to = json_encode($published_to);
+        }
 
         return [
             'published_date' => $this->faker->date(),
