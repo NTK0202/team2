@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\CheckLogController;
 use App\Http\Controllers\Admin\MemberController;
 use App\Http\Controllers\Admin\PermissionController;
@@ -55,7 +56,7 @@ Route::prefix('worksheet')
     ->group(function () {
         Route::get('my-timesheet', [WorkSheetController::class, 'list']);
         Route::get('/checkLogs', [CheckLogController::class, 'getTimeLogs']);
-        Route::get('{id}', [WorkSheetController::class,'getRequest']);
+        Route::get('{id}', [WorkSheetController::class, 'getRequest']);
         Route::get('/getByDate/{work_date}', [RegisterLateEarlyController::class, 'getWorksheetByWorkDate']);
     });
 
@@ -109,4 +110,13 @@ Route::prefix('role')
         Route::post('add-permission/{id}', 'addPermission');
         Route::put('update-permission/{id}', 'updatePermission');
         Route::delete('delete-permission/{id}', 'deletePermission');
+    });
+
+Route::prefix('admin')
+    ->controller(AdminController::class)
+    ->group(function () {
+        Route::prefix('request')->group(function () {
+            Route::get('/get', 'index')->middleware(['checkAuth', 'authorization:admin']);
+            Route::put('/approve/{id}', 'update')->middleware(['checkAuth', 'authorization:manager']);
+        });
     });

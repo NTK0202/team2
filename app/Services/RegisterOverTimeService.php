@@ -21,6 +21,17 @@ class RegisterOverTimeService extends BaseService
         return RegisterOverTimeRepository::class;
     }
 
+    public function handleValueArray($request)
+    {
+        $dataRequest = array_map('trim', $request->all());
+        $dataRequest['checkin'] = date('Y-m-d H:i', strtotime($dataRequest['request_for_date'] . $dataRequest['checkin']));
+        $dataRequest['checkout'] = date('Y-m-d H:i', strtotime($dataRequest['request_for_date'] . $dataRequest['checkout']));
+        $dataRequest['member_id'] = Auth::user()->id;
+        $dataRequest['request_type'] = 5;
+
+        return $dataRequest;
+    }
+
     public function checkRequest($date)
     {
         $dateRequest = Carbon::createFromFormat('Y-m-d', $date)->format('Y-m');
@@ -41,16 +52,13 @@ class RegisterOverTimeService extends BaseService
 
     public function createRequestOverTime($request)
     {
-        $dataRequest = array_map('trim', $request->all());
-        $dataRequest['member_id'] = Auth::user()->id;
-        $dataRequest['request_type'] = 5;
-
+        $dataRequest = $this->handleValueArray($request);
         return $this->repo->createRequestOverTime($dataRequest);
     }
 
     public function updateRequestOverTime($request)
     {
-        $dataRequest = array_map('trim', $request->all());
+        $dataRequest = $this->handleValueArray($request);
         return $this->repo->updateRequestOverTime($dataRequest);
     }
 }

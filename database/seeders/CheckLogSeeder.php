@@ -13,6 +13,6 @@ class CheckLogSeeder extends Seeder
      */
     public function run()
     {
-        \App\Models\CheckLog::factory(20000)->create();
+        \App\Models\CheckLog::factory(30000)->create();
     }
 }

@@ -18,8 +18,8 @@ class CheckLogFactory extends Factory
     public function definition()
     {
         static $id = 0;
-        static $day = 1;
-        static $month = 1;
+        static $day = 10;
+        static $month = 6;
         static $year = 2022;
         $workDate = $year.'-'.$month.'-'.$day;
         $checkin = mktime(random_int(7, 9), random_int(0, 59), random_int(0, 59), $month, $day, $year);
