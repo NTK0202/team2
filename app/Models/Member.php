@@ -25,6 +25,8 @@ class Member extends Authenticate implements JWTSubject
         'password',
         'remember_token',
         'other_email',
+        'avatar',
+        'avatar_official',
         'phone',
         'skype',
         'facebook',

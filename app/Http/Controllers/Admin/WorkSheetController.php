@@ -16,16 +16,16 @@ class WorkSheetController extends Controller
     public function __construct(WorkSheetService $worksheetService)
     {
         $this->worksheetService = $worksheetService;
-        $this->member_id = Auth::user()->id;
+        $this->member_id = Auth::id();
     }
 
     public function list(WorkSheetParamsRequest $request)
     {
-        return response()->json(['worksheet' => $this->worksheetService->filter($request,  $this->member_id)]);
+        return response()->json(['worksheet' => $this->worksheetService->filter($request,  $this->member_id), 'per_page' => config('per_page')]);
     }
 
-    public function getRequest($id)
+    public function getRequest($id, Request $request)
     {
-        return $this->worksheetService->find($id);
+        return $this->worksheetService->find($id, $request);
     }
 }

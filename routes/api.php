@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\CheckLogController;
 use App\Http\Controllers\Admin\MemberController;
 use App\Http\Controllers\Admin\PermissionController;
 use App\Http\Controllers\Admin\RegisterForgetController;
+use App\Http\Controllers\Admin\RegisterLeaveController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\WorkSheetController;
 use App\Http\Controllers\AuthController;
@@ -55,6 +56,7 @@ Route::prefix('worksheet')
         Route::get('my-timesheet', [WorkSheetController::class, 'list']);
         Route::get('/checkLogs', [CheckLogController::class, 'getTimeLogs']);
         Route::get('{id}', [WorkSheetController::class,'getRequest']);
+        Route::get('/getByDate/{work_date}', [RegisterLateEarlyController::class, 'getWorksheetByWorkDate']);
     });
 
 Route::prefix('worksheet/request/LateEarly')
@@ -63,7 +65,6 @@ Route::prefix('worksheet/request/LateEarly')
     ->group(function () {
         Route::post('/create', 'createRequestLateEarly');
         Route::put('/update', 'updateRequestLateEarly');
-        Route::get('/getWorksheetByWorkDate/{work_date}', 'getWorksheetByWorkDate');
     });
 
 Route::prefix('worksheet/request/OverTime')
@@ -74,12 +75,21 @@ Route::prefix('worksheet/request/OverTime')
         Route::put('/update', 'updateRequestOverTime');
     });
 
-Route::prefix('worksheet/request')
+
+Route::prefix('worksheet/request/forget')
     ->middleware(['checkAuth'])
     ->controller(RegisterForgetController::class)
     ->group(function () {
-        Route::post('forget/create', 'createForget');
-        Route::put('forget/update','updateForget');
+        Route::post('create', 'createForget');
+        Route::put('update', 'updateForget');
+    });
+
+Route::prefix('worksheet/request/leave')
+    ->middleware(['checkAuth'])
+    ->controller(RegisterLeaveController::class)
+    ->group(function () {
+        Route::post('create', 'createLeave');
+        Route::put('update', 'updateLeave');
     });
 
 Route::prefix('permission')

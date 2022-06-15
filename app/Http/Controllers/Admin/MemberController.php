@@ -16,7 +16,7 @@ class MemberController extends Controller
     public function __construct(MemberService $memberService)
     {
         $this->memberService = $memberService;
-        $this->member_id = Auth::user()->id;
+        $this->member_id = Auth::id();
     }
 
     public function edit()

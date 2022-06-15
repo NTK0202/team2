@@ -17,4 +17,9 @@ class WorkSheetService extends BaseService
     {
         return $this->repo->filter($request, $member_id);
     }
+
+    public function find($id, $request = null)
+    {
+        return $this->repo->find($id, $request);
+    }
 }

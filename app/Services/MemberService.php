@@ -12,9 +12,9 @@ class MemberService extends BaseService
         return MemberRepository::class;
     }
 
-    public function find($member_id)
+    public function find($member_id,$request = null)
     {
-        return $this->repo->find($member_id);
+        return $this->repo->find($member_id,$request);
     }
 
     public function update($member_id, $request)

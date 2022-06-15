@@ -3,32 +3,24 @@
 namespace App\Services;
 
 use App\Models\MemberRequestQuota;
-use App\Models\Request;
-use App\Models\Worksheet;
-use App\Repositories\RegisterForgetRepository;
+use App\Repositories\RegisterLeaveRepository;
+use App\Services\BaseService;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 
-class RegisterForgetService extends BaseService
+class RegisterLeaveService extends BaseService
 {
-    public function getModel()
-    {
-        return $this->model = Request::class;
-    }
-
     public function getRepository()
     {
-        return RegisterForgetRepository::class;
+        return RegisterLeaveRepository::class;
     }
 
     public function handleValueArray($request)
     {
         $valueRequest = array_map('trim', $request->all());
-        $valueRequest['checkin'] = date('Y-m-d H:i', strtotime($valueRequest['request_for_date'] . $valueRequest['checkin']));
-        $valueRequest['checkout'] = date('Y-m-d H:i', strtotime($valueRequest['request_for_date'] . $valueRequest['checkout']));
+        $valueRequest['leave_all_day'] = $valueRequest['leave_all_day'] ? $valueRequest['leave_all_day'] : 0;
         $valueRequest['member_id'] = Auth::user()->id;
-        $valueRequest['request_type'] = 1;
-        $valueRequest['error_count'] = isset($valueRequest['error_count']) ? 1 : 0;
+        $valueRequest['request_type'] = $valueRequest['paid'] ? $valueRequest['paid'] : $valueRequest['unpaid'];
 
         return $valueRequest;
     }
@@ -47,8 +39,7 @@ class RegisterForgetService extends BaseService
 
         if ($checkExistRequestQuota) {
             $value = [
-                'member_id' => Auth::user()->id,
-                'month' => Carbon::createFromFormat('Y-m-d', $date)->format('Y-m')
+                'member_id' => Auth::user()->id
             ];
 
             $this->repo->storeMemberRequestQuota($value);
@@ -57,9 +48,8 @@ class RegisterForgetService extends BaseService
         return $this->repo->checkRequest($date);
     }
 
-    public function updateForget($request)
+    public function updateLeave()
     {
-        $dataRequest = $this->handleValueArray($request);
-        return $this->repo->updateForget($dataRequest);
+        # code...
     }
 }

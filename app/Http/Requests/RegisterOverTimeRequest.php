@@ -28,7 +28,9 @@ class RegisterOverTimeRequest extends FormRequest
     {
         return [
             'reason' => 'required|string|max:100',
-            'request_for_date' => 'required|date',
+            'request_for_date' => 'required|date_format:Y-m-d',
+            'checkin' => 'required|date_format:H:i',
+            'checkout' => 'required|date_format:H:i',
         ];
     }
 

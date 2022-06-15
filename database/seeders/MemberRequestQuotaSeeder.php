@@ -14,6 +14,6 @@ class MemberRequestQuotaSeeder extends Seeder
      */
     public function run()
     {
-        \App\Models\MemberRequestQuota::factory(800)->create();
+        \App\Models\MemberRequestQuota::factory(5000)->create();
     }
 }

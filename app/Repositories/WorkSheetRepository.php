@@ -16,7 +16,10 @@ class WorkSheetRepository extends BaseRepository
 
     public function filter($request, $member_id)
     {
-        $this->model = $this->model->find($member_id);
+        $per_page = $request->per_page ?? config('default_per_page');
+        $page = $request->page ?? 1;
+
+        $this->model = $this->model->where('member_id', $member_id);
 
         if (trim((string)$request->start_date) !== "") {
             $this->model = $this->model
@@ -34,26 +37,26 @@ class WorkSheetRepository extends BaseRepository
             $this->model = $this->model->orderBy('work_date', 'desc');
         }
 
-        return $this->model->paginate(3, ['*'], 'page');
+        return $this->model->paginate($per_page, ['*'], 'page', $page);
     }
 
-    public function findRequest($date)
+    public function findRequest($date, $type)
     {
         return Request::where('member_id', Auth::user()->id)
             ->where('request_for_date', $date)
-            ->where('request_type', 1)
+            ->where('request_type', $type)
             ->first();
     }
 
-    public function find($id)
+    public function find($id, $request = null)
     {
         $worksheet = $this->model->where('id', $id)
             ->where('member_id', Auth::user()->id)
             ->first();
-            
+
         if ($this->model->find($id)) {
             if ($worksheet) {
-                $findRequest = $this->findRequest($worksheet->work_date);
+                $findRequest = $this->findRequest($worksheet->work_date, $request->type);
 
                 return (!$findRequest) ? $worksheet : $findRequest;
             }

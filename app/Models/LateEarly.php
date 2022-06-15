@@ -33,6 +33,6 @@ class LateEarly extends Model
         'admin_approved_status',
         'admin_approved_at',
         'admin_approved_comment',
-        'error_count'
+        'error_count',
     ];
 }

@@ -35,14 +35,4 @@ class Request extends Model
         'admin_approved_comment',
         'error_count'
     ];
-
-    public function setCheckinAttribute($value)
-    {
-        $this->attributes['checkin'] = date('Y-m-d H:i', strtotime($this->attributes['request_for_date'] . $value));
-    }
-
-    public function setCheckoutAttribute($value)
-    {
-        $this->attributes['checkout'] = date('Y-m-d H:i', strtotime($this->attributes['request_for_date'] . $value));
-    }
 }

@@ -27,8 +27,6 @@ class MemberRequest extends FormRequest
     public function rules()
     {
         return [
-            'avatar' => 'mimes:jpg,png|max:4096|dimensions:max_width=500,max_height=500',
-            'avatar_official' => 'mimes:jpg,png|max:4096|dimensions:max_width=500,max_height=500',
             'gender' => 'required',
             'birth_date' => 'required|date_format:Y-m-d',
             'other_email' => 'required|email',
@@ -42,7 +40,7 @@ class MemberRequest extends FormRequest
             'bank_name' => 'required|max:70',
             'bank_account' => 'required|regex:/^\d+$/|max:20',
             'marital_status' => 'required',
-            'academic_level' => 'required|max:50',
+            'academic_level' => 'max:50',
             'permanent_address' => 'required|max:255',
             'temporary_address' => 'required|max:255',
             'tax_identification' => 'nullable|max:20',

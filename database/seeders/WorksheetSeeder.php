@@ -2,9 +2,10 @@
 
 namespace Database\Seeders;
 
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
-class CheckLogSeeder extends Seeder
+class WorksheetSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -13,6 +14,6 @@ class CheckLogSeeder extends Seeder
      */
     public function run()
     {
-        \App\Models\CheckLog::factory(20000)->create();
+        \App\Models\Worksheet::factory(20000)->create();
     }
 }

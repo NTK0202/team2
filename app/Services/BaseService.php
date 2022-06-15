@@ -36,7 +36,7 @@ abstract class BaseService
         return (preg_match("/^[0-9]*$/", $params)) ? true : false;
     }
 
-    public function find($id)
+    public function find($id, $required = null)
     {
         if ($this->validateParams($id)) {
             return $this->repo->find($id);

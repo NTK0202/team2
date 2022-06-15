@@ -32,7 +32,7 @@ abstract class BaseRepository
         return $this->model->save();
     }
 
-    public function find($id)
+    public function find($id, $required = null)
     {
         if ($this->model->find($id)) {
             return $this->model->find($id);

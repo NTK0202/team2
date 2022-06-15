@@ -30,8 +30,6 @@ class RegisterForgetRequest extends FormRequest
             'request_for_date' => 'required|date_format:Y-m-d',
             'checkin' => 'required|date_format:H:i',
             'checkout' => 'required|date_format:H:i',
-            'reason' => 'required',
-            'special_reason' => 'nullable|in:[1,2,3]'
         ];
     }
 

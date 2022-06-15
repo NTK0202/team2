@@ -27,7 +27,7 @@ class CheckLogRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'date' => 'required|date',
+            'date' => 'required|date_format:Y-m-d',
         ];
     }
 

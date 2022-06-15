@@ -27,9 +27,7 @@ class CheckLogFactory extends Factory
         $checkout = mktime(random_int(16, 19), random_int(0, 59), random_int(0, 59), $month, $day, $year);
         static $cout = 0;
         static $time;
-        if ($id == 801) {
-            $id = 1;
-        }
+
         if ($id == 799) {
             if (date('D', strtotime($workDate)) == 'Sat' || date('D', strtotime($workDate)) == 'Sun') {
                 $cout = 3;

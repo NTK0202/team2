@@ -11,7 +11,7 @@ class MemberRepository extends BaseRepository
         return Member::class;
     }
 
-    public function find($member_id)
+    public function find($member_id,$request = null)
     {
         return $this->model->find($member_id);
     }
@@ -20,19 +20,6 @@ class MemberRepository extends BaseRepository
     {
         $result = $this->model->find($id);
         $result->fill($value->all());
-        if ($value->has('avatar')) {
-            $result->avatar = $value->file('avatar')->storeAs(
-                'uploads/members/',
-                uniqid() . $value->avatar->getClientOriginalName()
-            );
-        }
-
-        if ($value->has('avatar_official')) {
-            $result->avatar_official = $value->file('avatar_official')->storeAs(
-                'uploads/members/',
-                uniqid() . $value->avatar_official->getClientOriginalName()
-            );
-        }
 
         return $result->save();
     }

@@ -1,0 +1,15 @@
+2. Relipa Timesheet
+a. Introduction
+Relipa Timesheet là công cụ hỗ trợ quản lý chấm công. Thống kê thời gian chấm vân tay, tính toán thời gian chấm công, quản lý các lệnh đi muộn/về sớm, xin nghỉ phép, quên chấm vân tay. Quản lý ca làm việc, thời gian OT, quản lý ngày nghỉ lễ/ngày làm việc.
+b. Overall Description
+Các ca làm việc (Master data)
+Cấu hình 3 ca làm việc. Chỉ admin mới được cấu hình thời gian bắt đầu, thời gian kết thúc, giờ nghỉ trưa, ca làm việc mặc định:
+	8h -> 17h nghỉ trưa 1h (Ca 2)
+	8h30 -> 17h30 nghỉ trưa 1h (Ca 1) – default.
+	9h -> 18h nghỉ trưa 1h (Ca 3)
+
+Ca làm việc của member (shift)
+	Dựa theo những ca làm việc của công ty (master data) và lịch làm việc chung cả team, mỗi member sẽ được setup một ca làm việc theo khoảng thời gian. Mặc định khi tạo user cho member thì ca làm việc được set là Ca 1. 
+Ví dụ. Ca làm việc của bạn X là Ca 1 (8h30 -> 17h30) từ ngày 01/01/2022 -> 31/12/2022.
+
+Khi chuyển dự án hoặc có nhu cầu thay đổi ca làm việc, member cần liên hệ tới admin để cấu hình lại ca làm việc của mình.

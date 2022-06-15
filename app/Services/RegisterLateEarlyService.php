@@ -21,6 +21,17 @@ class RegisterLateEarlyService extends BaseService
         return RegisterLateEarlyRepository::class;
     }
 
+    public function handleValueArray($request)
+    {
+        $dataRequest = array_map('trim', $request->all());
+        $dataRequest['checkin'] = date('Y-m-d H:i', strtotime($dataRequest['request_for_date'] . $dataRequest['checkin']));
+        $dataRequest['checkout'] = date('Y-m-d H:i', strtotime($dataRequest['request_for_date'] . $dataRequest['checkout']));
+        $dataRequest['member_id'] = Auth::user()->id;
+        $dataRequest['request_type'] = 4;
+
+        return $dataRequest;
+    }
+
     public function checkRequest($date)
     {
         $dateRequest = Carbon::createFromFormat('Y-m-d', $date)->format('Y-m');
@@ -41,16 +52,13 @@ class RegisterLateEarlyService extends BaseService
 
     public function createRequestLateEarly($request)
     {
-        $dataRequest = array_map('trim', $request->all());
-        $dataRequest['member_id'] = Auth::user()->id;
-        $dataRequest['request_type'] = 4;
-
+        $dataRequest = $this->handleValueArray($request);
         return $this->repo->createRequestLateEarly($dataRequest);
     }
 
     public function updateRequestLateEarly($request)
     {
-        $dataRequest = array_map('trim', $request->all());
+        $dataRequest = $this->handleValueArray($request);
         return $this->repo->updateRequestLateEarly($dataRequest);
     }
 

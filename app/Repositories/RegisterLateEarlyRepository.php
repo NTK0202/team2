@@ -83,8 +83,16 @@ class RegisterLateEarlyRepository extends BaseRepository
 
     public function getWorksheetByWorkDate($work_date)
     {
-        return Worksheet::where('member_id', Auth::user()->id)
+        $worksheet = Worksheet::where('member_id', Auth::user()->id)
             ->where('work_date', $work_date)
-            ->first();
+            ->doesntExist();
+
+        if ($worksheet) {
+            return response()->json([],Response::HTTP_NO_CONTENT);
+        } else {
+            return Worksheet::where('member_id', Auth::user()->id)
+                ->where('work_date', $work_date)
+                ->first();
+        }
     }
 }

@@ -16,7 +16,7 @@ class CreateTableCheckLogsTable extends Migration
         Schema::create('check_logs', function (Blueprint $table) {
             $table->id();
             $table->string('member_id',10);
-            $table->dateTime('checktime');
+            $table->dateTime('checktime')->nullable();
             $table->date('date');
             $table->timestamps();
         });

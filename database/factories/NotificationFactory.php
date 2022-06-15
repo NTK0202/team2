@@ -13,6 +13,8 @@ class NotificationFactory extends Factory
      */
     public function definition()
     {
+        $attachment = ['Relipa_Portal.docx', 'relipa_portal_SRS_v1.0.xlsx', 'test.txt', 'test_attachment.zip', 'python-practice-book.pdf'];
+
         static $id = 0;
         $id++;
 
@@ -25,13 +27,14 @@ class NotificationFactory extends Factory
             $published_to = json_encode($published_to);
         }
 
+
         return [
             'published_date' => $this->faker->date(),
-            'subject' => $this->faker->title(),
+            'subject' => $this->faker->text(38),
             'message' => $this->faker->text(),
             'status' => rand(0, 2),
             'published_to' => $published_to,
-            'attachment' => 'python-practice-book.pdf',
+            'attachment' => $this->faker->randomElement($attachment),
             'created_by' => rand(1, 800),
         ];
     }

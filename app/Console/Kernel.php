@@ -2,6 +2,9 @@
 
 namespace App\Console;
 
+use App\Models\LeaveQuotas;
+use App\Models\Member;
+use Carbon\Carbon;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -16,6 +19,16 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         // $schedule->command('inspire')->hourly();
+        $checkMonth = LeaveQuotas::where('year', 'like', Carbon::createFromFormat('Y-m-d', Carbon::now()->toDateString())->format('Y'));
+
+        if ($checkMonth->exists()) {
+            if ($checkMonth->count() < Member::pluck('id')->count()) {
+                $schedule->command('AddMemberLeaveQuota:name')->monthly();
+            }
+
+            return $schedule->command('CreateLeaveQuota:name')->everyMinute();
+        }
+
     }
 
     /**
@@ -25,7 +38,7 @@ class Kernel extends ConsoleKernel
      */
     protected function commands()
     {
-        $this->load(__DIR__.'/Commands');
+        $this->load(__DIR__ . '/Commands');
 
         require base_path('routes/console.php');
     }

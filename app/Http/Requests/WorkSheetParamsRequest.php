@@ -28,11 +28,11 @@ class WorkSheetParamsRequest extends FormRequest
     public function rules()
     {
         return [
-            'end_date' => 'nullable|date',
-            'start_date' => 'nullable|date',
+            'end_date' => 'nullable|date|date_format:Y-m-d',
+            'start_date' => 'nullable|date|date_format:Y-m-d',
             'month' => [
                 'nullable',
-                Rule::in(["This month", "Last month", "This year", "All"])
+                Rule::in(["1", "2", "3", "4"])
             ],
             'work_date' => [
                 'nullable',
