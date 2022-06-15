@@ -116,7 +116,7 @@ Route::prefix('admin')
     ->controller(AdminController::class)
     ->group(function () {
         Route::prefix('request')->group(function () {
-            Route::get('/get', 'index')->middleware(['checkAuth', 'authorization:admin']);
+            Route::get('/', 'index')->middleware(['checkAuth', 'authorization:admin']);
             Route::put('/approve/{id}', 'update')->middleware(['checkAuth', 'authorization:manager']);
         });
     });

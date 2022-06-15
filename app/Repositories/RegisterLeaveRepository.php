@@ -31,34 +31,6 @@ class RegisterLeaveRepository extends BaseRepository
         return $memberRequestQuota->save();
     }
 
-    public function storeLeaveRequest($value = [])
-    {
-        dd(date('Y-m',$value['request_for_date']));
-        $dataRequest = [
-            'member_id' => Auth::user()->id,
-            'type' => 0,
-            'year' => date('Y', $value['request_for_date']),
-            'quota' => 1,
-            'note' => $value['note'],
-            'status' => 0
-        ];
-
-        $leaveRequestFind = LeaveRequest::where('member_id', Auth::user()->id)
-            ->where('year', date('Y', $value['request_for_date']))
-            ->first();
-            dd($value['request_for_date']);
-        if ($leaveRequestFind) {
-            $leaveRequestFind->fill($value);
-
-            return $leaveRequestFind->save();
-        }
-
-        $leaveRequest = new LeaveRequest();
-        $leaveRequest->fill($dataRequest);
-
-        return $leaveRequest->save();
-    }
-
     public function store($value = [])
     {
         $request = $this->model->where('request_for_date', 'like', $value['request_for_date'])
@@ -69,8 +41,6 @@ class RegisterLeaveRepository extends BaseRepository
         if ($request) {
             $this->model->fill($value);
             $this->model->save();
-
-            $this->storeLeaveRequest($value);
 
             return response()->json(['message' => 'Create request forget successfully !']);
         }
@@ -89,7 +59,7 @@ class RegisterLeaveRepository extends BaseRepository
         if ($request) {
             $updateRequest = $this->model->where('request_for_date', 'like', $value['request_for_date'])
                 ->where('member_id', Auth::user()->id)
-                ->where('request_type', 2)
+                ->whereIn('request_type', [2, 3])
                 ->first();
 
             if ($updateRequest) {

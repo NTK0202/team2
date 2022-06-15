@@ -28,7 +28,7 @@ class RegisterForgetService extends BaseService
         $valueRequest['checkout'] = date('Y-m-d H:i', strtotime($valueRequest['request_for_date'] . $valueRequest['checkout']));
         $valueRequest['member_id'] = Auth::user()->id;
         $valueRequest['request_type'] = 1;
-        $valueRequest['error_count'] = isset($valueRequest['error_count']) ? 1 : 0;
+        $valueRequest['error_count'] = isset($valueRequest['error_count']) ? $valueRequest['error_count'] : 0;
 
         return $valueRequest;
     }
