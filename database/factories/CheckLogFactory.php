@@ -18,8 +18,8 @@ class CheckLogFactory extends Factory
     public function definition()
     {
         static $id = 0;
-        static $day = 10;
-        static $month = 6;
+        static $day = 1;
+        static $month = 3;
         static $year = 2022;
         $workDate = $year.'-'.$month.'-'.$day;
         $checkin = mktime(random_int(7, 9), random_int(0, 59), random_int(0, 59), $month, $day, $year);
@@ -28,7 +28,7 @@ class CheckLogFactory extends Factory
         static $cout = 0;
         static $time;
 
-        if ($id == 799) {
+        if ($id == 99) {
             if (date('D', strtotime($workDate)) == 'Sat' || date('D', strtotime($workDate)) == 'Sun') {
                 $cout = 3;
             } else {
@@ -71,7 +71,7 @@ class CheckLogFactory extends Factory
 
         }
         return [
-            'member_id' => $id++ < 800 ? $id : $id = 1,
+            'member_id' => $id++ < 100 ? $id : $id = 1,
             'checktime' => (date('D', strtotime($workDate)) != 'Sat' && date('D',
                     strtotime($workDate)) != 'Sun') ? date('Y-m-d H:i:s', $time ?? $checkin) : null,
             'date' => $workDate,

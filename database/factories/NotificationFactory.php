@@ -35,7 +35,7 @@ class NotificationFactory extends Factory
             'status' => rand(0, 2),
             'published_to' => $published_to,
             'attachment' => $this->faker->randomElement($attachment),
-            'created_by' => rand(1, 800),
+            'created_by' => rand(1, 100),
         ];
     }
 }

@@ -14,11 +14,10 @@ class LateEarlyFactory extends Factory
      */
     public function definition()
     {
-//        $date = $this->faker->date();
         $date = $this->faker->randomElement(Worksheet::pluck('work_date')->toarray());
 
         return [
-            'member_id' => rand(1, 800),
+            'member_id' => rand(1, 100),
             'request_type' => rand(1, 5),
             'request_for_date' => $date,
             'checkin' => $date.' '. $this->faker->time(),

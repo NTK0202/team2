@@ -14,6 +14,6 @@ class WorksheetSeeder extends Seeder
      */
     public function run()
     {
-        \App\Models\Worksheet::factory(30000)->create();
+        \App\Models\Worksheet::factory(10000)->create();
     }
 }

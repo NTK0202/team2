@@ -18,11 +18,11 @@ class WorksheetFactory extends Factory
     public function definition()
     {
         static $id = 0;
-        static $day = 10;
-        static $month = 6;
+        static $day = 1;
+        static $month = 3;
         static $year = 2022;
         $workDate = $year.'-'.$month.'-'.$day;
-        if ($id == 799) {
+        if ($id == 99) {
             $day++;
         }
         if ($month % 2 != 0) {
@@ -46,7 +46,7 @@ class WorksheetFactory extends Factory
             }
 
         }
-        $memberId = $id++ < 800 ? $id : $id = 1;
+        $memberId = $id++ < 100 ? $id : $id = 1;
         $checkLog = Checklog::where('member_id', $memberId)->where('date', $workDate);
         $checkIN = $checkLog->first()->checktime ?? null;
         $checkOUT = $checkLog->latest()->first()->checktime ?? null;
