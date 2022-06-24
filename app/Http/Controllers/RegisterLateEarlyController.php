@@ -25,7 +25,7 @@ class RegisterLateEarlyController extends Controller
             return $this->registerLateEarlyService->createRequestLateEarly($request);
         }
 
-        return response()->json(['message' => 'You have run out of requests !'], Response::HTTP_CONFLICT);
+        return response()->json(['message' => 'You have run out of requests late/early !'], Response::HTTP_CONFLICT);
     }
 
     public function updateRequestLateEarly(RegisterLateEaryRequest $request)

@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class Request extends Model
 {
@@ -35,4 +36,14 @@ class Request extends Model
         'admin_approved_comment',
         'error_count'
     ];
+
+    public function member()
+    {
+        return $this->belongsTo(Member::class, 'member_id');
+    }
+
+    public function divisionMember()
+    {
+        return $this->belongsTo(DivisionMember::class, 'member_id');
+    }
 }

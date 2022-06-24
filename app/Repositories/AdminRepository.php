@@ -7,8 +7,9 @@ use App\Models\MemberRequestQuota;
 use App\Models\Request;
 use App\Models\Worksheet;
 use Carbon\Carbon;
+use Symfony\Component\HttpFoundation\Response;
 
-class RequestRepository extends BaseRepository
+class AdminRepository extends BaseRepository
 {
 
     public function getModel()
@@ -16,68 +17,45 @@ class RequestRepository extends BaseRepository
         return Request::class;
     }
 
-    public function findOrFail($id)
+    public function getRequest($request)
     {
-        return $this->model->findOrFail($id);
-    }
+        $perPage = $request->per_page ?? config('common.default_per_page');
 
-    public function confirm($request, $id)
-    {
-        $requestSent = $this->findOrFail($id);
-        if ($requestSent->status === 0) {
-            $status = $request->status;
-            $comment = trim($request->comment);
-            $memberId = $requestSent->member_id;
-            $date = $requestSent->request_for_date;
-            $requestType = $requestSent->request_type;
-            $note = config('common.note_confirm');
+        $getRequests = $this->model;
 
-            $worksheet = Worksheet::where('member_id', $memberId)->where('work_date', $date)->first();
-
-            $data = [
-                'status' => $status,
-                'manager_confirmed_comment' => $comment,
-                'manager_confirmed_at' => now(),
-                'manager_confirmed_status' => 1,
-            ];
-
-            $this->update($id, $data);
-            $worksheet->note = $note[$requestType];
-            $worksheet->save();
-
-            return response()->json([
-                'status' => true,
-                'code' => 201,
-                'message' => 'Confirm request success!'
-            ], 201);
-        } else {
-            return response()->json([
-                'status' => false,
-                'code' => 403,
-                'error' => 'You are not authorized to process this request'
-            ], 403);
+        if (trim((string) $request->start_date) !== "") {
+            $getRequests = $getRequests
+                ->where('request_for_date', '>=', $request->start_date ?? "");
         }
-    }
 
-    public function getRequestConfirm()
-    {
-        $requestConfirm = $this->model->where('status', 1)->get();
-        return $requestConfirm;
+        if (trim((string) $request->end_date) !== "") {
+            $getRequests = $getRequests
+                ->where('request_for_date', '<=', $request->end_date ?? "");
+        }
+
+        if (trim((string) $request->order_request_for_date) !== "") {
+            $order = $request->order_request_for_date;
+        } else {
+            $order = 'desc';
+        }
+
+        return $getRequests
+            ->whereIn('status', [0, 1])
+            ->orderBy('request_for_date', $order)
+            ->orderBy('id', $order)
+            ->paginate($perPage, ['*'], 'page');
     }
 
     public function approve($request, $id)
     {
-        $requestConfirm = $this->findOrFail($id);
+        $requestConfirm = $this->model->findOrFail($id);
         if ($requestConfirm->status === 1) {
             $status = $request->status;
             $comment = trim($request->comment);
-
             $memberId = $requestConfirm->member_id;
-            $checkIn = $requestConfirm->check_in;
-            $checkOut = $requestConfirm->check_out;
             $date = $requestConfirm->request_for_date;
             $requestType = $requestConfirm->request_type;
-            $note = config('common.note_approve');
+            $note = config('common.approve');
             $errorCount = $requestConfirm->error_count;
             $month = date('Y-m', strtotime($date));
 
@@ -85,16 +63,16 @@ class RequestRepository extends BaseRepository
 
             $data = [
                 'status' => $status,
-                'manager_confirmed_comment' => $comment,
-                'manager_confirmed_at' => now(),
-                'manager_confirmed_status' => 1,
+                'admin_approved_comment' => $comment,
+                'admin_approved_at' => now(),
+                'admin_approved_status' => 1,
             ];
 
             $this->update($id, $data);
+
             if ($status === 2) {
                 $worksheet->note = $note[$requestType];
                 $worksheet->save();
-
                 if ($errorCount != 0) {
                     $requestQuota = MemberRequestQuota::where('member_id', $memberId)
                         ->where('month', $month)
@@ -121,17 +99,23 @@ class RequestRepository extends BaseRepository
                 $worksheet->save();
             }
 
-            return response()->json([
-                'status' => true,
-                'code' => 201,
-                'message' => 'Confirm request success!'
-            ], 201);
+            return response()->json(['message' => 'Approve request successfully !'], Response::HTTP_CREATED);
         } else {
-            return response()->json([
-                'status' => false,
-                'code' => 403,
-                'error' => 'You are not authorized to process this request'
-            ], 403);
+            return response()->json(['error' => 'You are not authorized to process this request !'],
+                Response::HTTP_FORBIDDEN);
+        }
+    }
+
+    public function show($id)
+    {
+        $requests = $this->model
+            ->where('id', $id)
+            ->whereIn('status', [0, 1]);
+
+        if ($requests->exists()) {
+            return $requests->first();
+        } else {
+            return response()->json(['error' => 'This request is not available yet !'], Response::HTTP_NO_CONTENT);
         }
     }
 }

@@ -7,16 +7,10 @@ use App\Models\Role;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Symfony\Component\HttpFoundation\Response;
 
 class Authorization
 {
-    /**
-     * Handle an incoming request.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure(\Illuminate\Http\Request): (\Illuminate\Http\Response|\Illuminate\Http\RedirectResponse)  $next
-     * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
-     */
     public function handle(Request $request, Closure $next, $roles)
     {
         $role = Role::where('title', $roles)->first();
@@ -24,7 +18,7 @@ class Authorization
         if (in_array(Auth::id(), $hasRole)) {
             return $next($request);
         } else {
-            return response()->json(['status' => "You don't have access !"]);
+            return response()->json(['status' => "You don't have access !"], Response::HTTP_FORBIDDEN);
         }
     }
 }

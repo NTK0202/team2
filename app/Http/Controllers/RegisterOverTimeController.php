@@ -26,7 +26,7 @@ class RegisterOverTimeController extends Controller
             return $this->registerOverTimeService->createRequestOverTime($request);
         }
 
-        return response()->json(['message' => 'You have run out of requests !'], Response::HTTP_CONFLICT);
+        return response()->json(['message' => 'You have run out of requests over time !'], Response::HTTP_CONFLICT);
     }
 
     public function updateRequestOverTime(RegisterOverTimeRequest $request)

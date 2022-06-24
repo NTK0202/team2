@@ -33,7 +33,7 @@ class AuthController extends Controller
     {
         if (!$token = auth()->attempt($request->validated())) {
             return response()->json([
-                'error' => 'Email or password is incorrect, please try again !'
+                'error' => 'Email or Password is incorrect, please try again !'
             ], Response::HTTP_FORBIDDEN);
         }
 

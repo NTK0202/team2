@@ -87,8 +87,15 @@ class RegisterLateEarlyRepository extends BaseRepository
             ->where('work_date', $work_date)
             ->doesntExist();
 
+//        $requestLateEarly = Request::where('member_id', Auth::user()->id)
+//            ->where('request_for_date', $work_date)
+//            ->where('request_type', 4)
+//            ->doesntExist();
+
         if ($worksheet) {
-            return response()->json([],Response::HTTP_NO_CONTENT);
+            return response()->json([], Response::HTTP_NO_CONTENT);
+//        } elseif ($requestLateEarly) {
+//            return response()->json(['message' => '']);
         } else {
             return Worksheet::where('member_id', Auth::user()->id)
                 ->where('work_date', $work_date)

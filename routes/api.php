@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\CheckLogController;
+use App\Http\Controllers\Admin\ManagerController;
 use App\Http\Controllers\Admin\MemberController;
 use App\Http\Controllers\Admin\PermissionController;
 use App\Http\Controllers\Admin\RegisterForgetController;
@@ -112,11 +113,20 @@ Route::prefix('role')
         Route::delete('delete-permission/{id}', 'deletePermission');
     });
 
+Route::prefix('manager')
+    ->middleware(['checkAuth', 'authorization:manager'])
+    ->controller(ManagerController::class)
+    ->group(function () {
+        Route::get('/', 'index');
+        Route::get('/show/{id}', 'show');
+        Route::put('/confirm/{id}', 'update');
+    });
+
 Route::prefix('admin')
+    ->middleware(['checkAuth', 'authorization:admin'])
     ->controller(AdminController::class)
     ->group(function () {
-        Route::prefix('request')->group(function () {
-            Route::get('/', 'index')->middleware(['checkAuth', 'authorization:admin']);
-            Route::put('/approve/{id}', 'update')->middleware(['checkAuth', 'authorization:manager']);
-        });
+        Route::get('/', 'index');
+        Route::get('/show/{id}', 'show');
+        Route::put('/approve/{id}', 'update');
     });

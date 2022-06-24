@@ -42,6 +42,13 @@ class WorkSheetRepository extends BaseRepository
 
     public function findRequest($date, $type)
     {
+        if ($type == 6) {
+            return Request::where('member_id', Auth::user()->id)
+                ->where('request_for_date', $date)
+                ->whereIn('request_type', [2, 3])
+                ->first();
+        }
+
         return Request::where('member_id', Auth::user()->id)
             ->where('request_for_date', $date)
             ->where('request_type', $type)

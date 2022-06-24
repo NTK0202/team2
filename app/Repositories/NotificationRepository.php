@@ -27,6 +27,7 @@ class NotificationRepository extends BaseRepository
             return $this->model
                 ->with('author')
                 ->orderBy('published_date', $order)
+                ->orderBy('subject', $order)
                 ->paginate($perPage, ['*'], 'page');
         } else {
             $memberId = auth()->user()->id;
@@ -36,6 +37,7 @@ class NotificationRepository extends BaseRepository
             return $this->model
                 ->with('author')
                 ->orderBy('published_date', $order)
+                ->orderBy('subject', $order)
                 ->whereJsonContains('published_to', [$divisionId])
                 ->orwhereJsonContains('published_to', ["all"])
                 ->paginate($perPage, ['*'], 'page');

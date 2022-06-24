@@ -32,10 +32,11 @@ class NotificationRequest extends FormRequest
                 'nullable',
                 Rule::in(["asc", "desc"])
             ],
+
             'per_page' => [
                 'nullable',
-                'integer',
-            ]
+                Rule::in(config('common.per_page')),
+            ],
         ];
     }
 
@@ -43,6 +44,6 @@ class NotificationRequest extends FormRequest
     {
         throw new HttpResponseException(response()->json(collect($validator->errors())->map(function ($error) {
             return $error[0];
-        }),ResponseAlias::HTTP_UNPROCESSABLE_ENTITY));
+        }), ResponseAlias::HTTP_UNPROCESSABLE_ENTITY));
     }
 }

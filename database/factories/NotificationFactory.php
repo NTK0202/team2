@@ -31,7 +31,7 @@ class NotificationFactory extends Factory
         return [
             'published_date' => $this->faker->date(),
             'subject' => $this->faker->text(38),
-            'message' => $this->faker->text(),
+            'message' => $this->faker->text(20000),
             'status' => rand(0, 2),
             'published_to' => $published_to,
             'attachment' => $this->faker->randomElement($attachment),

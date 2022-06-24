@@ -42,7 +42,7 @@ class RegisterLeaveRepository extends BaseRepository
             $this->model->fill($value);
             $this->model->save();
 
-            return response()->json(['message' => 'Create request forget successfully !']);
+            return response()->json(['message' => 'Create request leave successfully !']);
         }
 
         return response()->json(['message' => "Only 1 request of the same type is allowed per day !"]);
@@ -66,10 +66,10 @@ class RegisterLeaveRepository extends BaseRepository
                 $updateRequest->fill($value);
                 $updateRequest->save();
 
-                return response()->json(['message' => 'Update request forget successfully !']);
+                return response()->json(['message' => 'Update request leave successfully !']);
             }
 
-            return response()->json(['message' => 'Request forget does not exist']);
+            return response()->json(['message' => 'Request leave does not exist']);
         }
 
         return response()->json(['message' => "Your request is in confirmed or approved status, so it cannot be edited !"]);
